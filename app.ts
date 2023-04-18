@@ -12,13 +12,27 @@ import homepageInserter from "./prop_inserters/homepage";
 import mergeConfig from "./prop_mergers/mergeConfig";
 
 const fs = require("fs");
+import { parseArgs } from "util";
+
+const {values: {package_path,env_path}} = parseArgs({
+	options: {
+		package_path: {
+			type: "string",
+			short: "p"
+		},
+		env_path: {
+			type: "string",
+			short: "e"
+		}
+	}
+});
 
 
 // Read config
 let data: Record<string,string|Record<string,string>> = {};
 try
 {
-	data = JSON.parse(fs.readFileSync("./package.json","utf8"));
+	data = JSON.parse(fs.readFileSync(package_path,"utf8"));
 }
 catch (err)
 {
@@ -50,7 +64,7 @@ data = mergeConfig(data,pushConfigs);
 // Write changes
 try
 {
-    fs.writeFileSync("./package.json", JSON.stringify(data,null,4));
+    fs.writeFileSync(package_path, JSON.stringify(data,null,4));
 }
 catch(err) 
 {
@@ -60,7 +74,7 @@ catch(err)
 // Append sourcemap attribute to env
 try
 {
-	fs.appendFileSync(".env",`GENERATE_SOURCEMAP=${generateSourceMapping}\n`)
+	fs.appendFileSync(env_path,`GENERATE_SOURCEMAP=${generateSourceMapping}\n`)
 }
 catch(err)
 {
