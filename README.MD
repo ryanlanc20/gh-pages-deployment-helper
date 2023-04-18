@@ -5,6 +5,16 @@ It guides you through the various modifications that need to be made in package.
 
 ## Using the tool
 
+### Install gh-pages
+```bash
+    npm install gh-pages
+```
+
+### Install package dependencies
+```bash
+    npm install
+```
+
 ### Compile into javascript
 ```bash
 tsc --project ./tsconfig.json
